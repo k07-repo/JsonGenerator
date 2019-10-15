@@ -24,10 +24,10 @@ public class RootWindow extends JFrame {
     public RootWindow() {
         this.setTitle("JSON Generator");
         this.setLayout(new GridLayout(5, 1));
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         input = new JTextArea();
         modPrefix = new JTextField();
-
 
         JPanel prefixPanel = textFieldWithLabel(modPrefix, "Prefix");
         this.add(prefixPanel);
@@ -49,19 +49,20 @@ public class RootWindow extends JFrame {
         JButton createJsonsButton = new JButton("Start");
         createJsonsButton.addActionListener(e -> {
             String[] inputs = getInputArray();
-            for(String input: inputs) {
-                if(jsonList.getSelectedIndex() == 0) {
+
+            for (String input : inputs) {
+                if (jsonList.getSelectedIndex() == 0) {
                     generateCubeBlockstate(input, modPrefix.getText(), outputDirectory);
-                }
-                else if(jsonList.getSelectedIndex() == 1) {
+                } else if (jsonList.getSelectedIndex() == 1) {
                     generateSelfLootTable(input, modPrefix.getText(), outputDirectory);
                 }
             }
+            showSuccessMessage("Success!");
         });
         this.add(createJsonsButton);
     }
 
-    private static void generateCubeBlockstate(String registryName, String prefix, File outputDirectory) {
+    private static void generateCubeBlockstate(String registryName, String prefix, File outputDirectory){
         String path = prefix + ":block/" + registryName;
 
         Map<String, Object> json = new HashMap<>();
@@ -72,10 +73,11 @@ public class RootWindow extends JFrame {
         json.put("variants", variants);
         File f = new File(outputDirectory, registryName + ".json");
 
-        try (FileWriter w = new FileWriter(f)) {
+        try(FileWriter w = new FileWriter(f)) {
             GSON.toJson(json, w);
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        catch(IOException e) {
+            showErrorMessage(e.getStackTrace().toString());
         }
     }
 
@@ -106,11 +108,11 @@ public class RootWindow extends JFrame {
         top.add("pools", pools);
 
         File f = new File(outputDirectory, registryName + ".json");
-
-        try (FileWriter w = new FileWriter(f)) {
+        try(FileWriter w = new FileWriter(f)) {
             GSON.toJson(top, w);
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        catch(IOException e) {
+            showErrorMessage(e.getStackTrace().toString());
         }
     }
 
@@ -148,6 +150,18 @@ public class RootWindow extends JFrame {
         panel.add(new JLabel(name));
         panel.add(f);
         return panel;
+    }
+
+    public static void showSuccessMessage(String message) {
+        showMessage(message, "Success!", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public static void showErrorMessage(String message) {
+        showMessage(message, "Error!", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static void showMessage(String message, String title, int type) {
+        JOptionPane.showMessageDialog(null, message, title, type);
     }
 
 }

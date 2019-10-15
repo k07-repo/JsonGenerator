@@ -4,7 +4,8 @@
     <list default="true" id="b9cce847-32e7-4495-b9d5-0dbf6bc710f7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/k07/JsonGenerator/RootWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/k07/JsonGenerator/RootWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/net/k07/JsonGenerator/RootWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/net/k07/JsonGenerator/RootWindow.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/net/k07/JsonGenerator/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/net/k07/JsonGenerator/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/net/k07/JsonGenerator/RootWindow.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -28,11 +29,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/k07/JsonGenerator/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="34">
+              <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -40,10 +38,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/k07/JsonGenerator/RootWindow.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="139">
-              <caret line="26" column="40" selection-start-line="26" selection-start-column="40" selection-end-line="26" selection-end-column="40" />
+            <state relative-caret-position="476">
+              <caret line="106" column="24" lean-forward="true" selection-start-line="106" selection-start-column="24" selection-end-line="106" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#5529#5530#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -107,7 +106,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -145,7 +144,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -199,7 +198,7 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15519765" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15446559" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -240,11 +239,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/k07/JsonGenerator/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="34">
+          <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -260,10 +256,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/k07/JsonGenerator/RootWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="26" column="40" selection-start-line="26" selection-start-column="40" selection-end-line="26" selection-end-column="40" />
+        <state relative-caret-position="476">
+          <caret line="106" column="24" lean-forward="true" selection-start-line="106" selection-start-column="24" selection-end-line="106" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#5529#5530#0" expanded="true" />
           </folding>
         </state>
       </provider>
