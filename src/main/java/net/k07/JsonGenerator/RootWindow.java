@@ -18,36 +18,57 @@ public class RootWindow extends JFrame {
     private static JTextArea input;
     private static JTextField modPrefix;
     private static File outputDirectory;
+    private static JTextField outputDirTextField;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
     public RootWindow() {
         this.setTitle("JSON Generator");
-        this.setLayout(new GridLayout(5, 1));
+        this.setLayout(new GridLayout(3, 1));
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         input = new JTextArea();
         modPrefix = new JTextField();
 
-        JPanel prefixPanel = textFieldWithLabel(modPrefix, "Prefix");
-        this.add(prefixPanel);
+        JPanel topPanel = new JPanel(new GridLayout(3, 1));
 
-        JPanel inputPanel = wrapInScrollPaneAndPanel(input, "Input (separate by new lines)");
-        this.add(inputPanel);
+        JPanel prefixPanel = componentWithLabel(modPrefix, "Prefix");
+        topPanel.add(prefixPanel);
 
         String[] choices = {"Cube Blockstate", "Drop-Self Loot Table"};
         JComboBox jsonList = new JComboBox(choices);
         jsonList.setSelectedIndex(0);
-        this.add(jsonList);
+        JPanel choicesPanel = componentWithLabel(jsonList, "Action");
+        topPanel.add(choicesPanel);
 
+        JPanel outputPanel = new JPanel(new GridLayout(1, 2));
         JButton chooseOutputDirButton = new JButton("Choose Output Directory");
         chooseOutputDirButton.addActionListener(e -> {
             outputDirectory = this.chooseOutputDirectory();
+            outputDirTextField.setText(outputDirectory.toString());
         });
-        this.add(chooseOutputDirButton);
+        outputDirTextField = new JTextField();
+        outputDirTextField.setEditable(false);
+        outputPanel.add(chooseOutputDirButton);
+        outputPanel.add(outputDirTextField);
+        topPanel.add(outputPanel);
+
+        this.add(topPanel);
+
+        JPanel inputPanel = wrapInScrollPaneAndPanel(input, "Input (separate by new lines)");
+        this.add(inputPanel);
+
+
+
+
 
         JButton createJsonsButton = new JButton("Start");
         createJsonsButton.addActionListener(e -> {
+            if(outputDirectory == null) {
+                showErrorMessage("Select an output directory first!");
+                return;
+            }
+
             String[] inputs = getInputArray();
 
             for (String input : inputs) {
@@ -145,10 +166,10 @@ public class RootWindow extends JFrame {
         return panel;
     }
 
-    public JPanel textFieldWithLabel(JTextField f, String name) {
+    public JPanel componentWithLabel(Component c, String name) {
         JPanel panel = new JPanel(new GridLayout(1, 2));
         panel.add(new JLabel(name));
-        panel.add(f);
+        panel.add(c);
         return panel;
     }
 

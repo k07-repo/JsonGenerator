@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9cce847-32e7-4495-b9d5-0dbf6bc710f7" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/k07/JsonGenerator/RootWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/k07/JsonGenerator/RootWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/net/k07/JsonGenerator/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/net/k07/JsonGenerator/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/net/k07/JsonGenerator/RootWindow.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -38,11 +35,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/k07/JsonGenerator/RootWindow.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="106" column="24" lean-forward="true" selection-start-line="106" selection-start-column="24" selection-end-line="106" selection-end-column="24" />
+            <state relative-caret-position="149">
+              <caret line="46" column="59" selection-start-line="46" selection-start-column="59" selection-end-line="46" selection-end-column="59" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5529#5530#0" expanded="true" />
+                <element signature="e#6218#6219#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -256,11 +253,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/k07/JsonGenerator/RootWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="106" column="24" lean-forward="true" selection-start-line="106" selection-start-column="24" selection-end-line="106" selection-end-column="24" />
+        <state relative-caret-position="149">
+          <caret line="46" column="59" selection-start-line="46" selection-start-column="59" selection-end-line="46" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5529#5530#0" expanded="true" />
+            <element signature="e#6218#6219#0" expanded="true" />
           </folding>
         </state>
       </provider>
