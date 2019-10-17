@@ -69,43 +69,59 @@ public class RootWindow extends JFrame {
 
         JButton createJsonsButton = new JButton("Start");
         createJsonsButton.addActionListener(e -> {
-            if(outputDirectory == null) {
-                showErrorMessage("Select an output directory first!");
-                return;
-            }
-
-            if(jsonList.getSelectedIndex() == 2) {
-                generateBlockObjectFields();
-            }
-            else {
-                String[] inputs = getInputArray();
-
-                for (String input : inputs) {
-                    if (jsonList.getSelectedIndex() == 0) {
-                        generateCubeBlockstate(input, modPrefix.getText(), outputDirectory);
-                    } else if (jsonList.getSelectedIndex() == 1) {
-                        generateSelfLootTable(input, modPrefix.getText(), outputDirectory);
+            switch(jsonList.getSelectedIndex()) {
+                case 0:
+                    if(outputDirectory == null) {
+                        showErrorMessage("Select an output directory first!");
+                        return;
                     }
-                }
+                    bulkGenerateCubeBlockstates(getInputArray());
+                    return;
+
+                case 1:
+                    if(outputDirectory == null) {
+                        showErrorMessage("Select an output directory first!");
+                        return;
+                    }
+                    bulkGenerateSelfLootTables(getInputArray());
+                    return;
+
+                case 2:
+                    generateBlockObjectFields();
             }
             showSuccessMessage("Success!");
         });
         this.add(createJsonsButton);
     }
 
+    private static void bulkGenerateCubeBlockstates(String[] inputs) {
+        for(String s: inputs) {
+            generateCubeBlockstate(s, modPrefix.getText(), outputDirectory);
+        }
+    }
+
+    private static void bulkGenerateSelfLootTables(String[] inputs) {
+        for(String s: inputs) {
+            generateSelfLootTable(s, modPrefix.getText(), outputDirectory);
+        }
+    }
+
     private static void generateCubeBlockstate(String registryName, String prefix, File outputDirectory){
         String path = prefix + ":block/" + registryName;
 
-        Map<String, Object> json = new HashMap<>();
-        Map<String, Object> variants = new HashMap<>();
-        Map<String, Object> normal = new HashMap<>();
-        normal.put("model", path);
-        variants.put("", normal);
-        json.put("variants", variants);
+        JsonObject model = new JsonObject();
+        model.addProperty("model", path);
+
+        JsonObject blankVariant = new JsonObject();
+        blankVariant.add("", model);
+
+        JsonObject variants = new JsonObject();
+        variants.add("variants", blankVariant);
+
         File f = new File(outputDirectory, registryName + ".json");
 
         try(FileWriter w = new FileWriter(f)) {
-            GSON.toJson(json, w);
+            GSON.toJson(variants, w);
         }
         catch(IOException e) {
             showErrorMessage(e.getStackTrace().toString());
@@ -204,5 +220,7 @@ public class RootWindow extends JFrame {
     public static void showMessage(String message, String title, int type) {
         JOptionPane.showMessageDialog(null, message, title, type);
     }
+
+
 
 }

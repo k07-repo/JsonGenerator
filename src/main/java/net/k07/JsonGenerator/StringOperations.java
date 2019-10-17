@@ -14,6 +14,10 @@ public class StringOperations {
         return "@ObjectHolder(\"" + createID(prefix, camelCaseToSnakeCase(camelCaseName)) + "\") public static " + type + " " + camelCaseName + ";";
     }
 
+    public static String createBlockItemRegistry(String prefix, String camelCaseName) {
+        return "registry.register(new BlockItem(BlockRegistry." + camelCaseName + ", blockTabProperty).setRegistryName(\"" + camelCaseToSnakeCase(camelCaseName) + "\"))";
+    }
+
     public static String createID(String prefix, String registryName) {
         return prefix + ":" + registryName;
     }
@@ -29,6 +33,24 @@ public class StringOperations {
             else {
                 stringBuilder.append("_");
                 stringBuilder.append(Character.toLowerCase(current));
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
+    public static String snakeCaseToCamelCase(String input) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for(int k = 0; k < input.length(); k++) {
+            char current = input.charAt(k);
+            if(current != '_') {
+                stringBuilder.append(input.charAt(k));
+            }
+            else {
+                k++;
+                current = input.charAt(k);
+                stringBuilder.append(Character.toUpperCase(current));
             }
         }
 
