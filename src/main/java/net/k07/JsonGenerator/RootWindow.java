@@ -16,6 +16,7 @@ import java.util.Map;
 public class RootWindow extends JFrame {
 
     private static JTextArea input;
+    private static JTextArea output;
     private static JTextField modPrefix;
     private static File outputDirectory;
     private static JTextField outputDirTextField;
@@ -28,6 +29,7 @@ public class RootWindow extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         input = new JTextArea();
+        output = new JTextArea();
         modPrefix = new JTextField();
 
         JPanel topPanel = new JPanel(new GridLayout(3, 1));
@@ -35,13 +37,13 @@ public class RootWindow extends JFrame {
         JPanel prefixPanel = componentWithLabel(modPrefix, "Prefix");
         topPanel.add(prefixPanel);
 
-        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table"};
+        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Create Block Object Fields"};
         JComboBox jsonList = new JComboBox(choices);
         jsonList.setSelectedIndex(0);
         JPanel choicesPanel = componentWithLabel(jsonList, "Action");
         topPanel.add(choicesPanel);
 
-        JPanel outputPanel = new JPanel(new GridLayout(1, 2));
+        JPanel outputOptionsPanel = new JPanel(new GridLayout(1, 2));
         JButton chooseOutputDirButton = new JButton("Choose Output Directory");
         chooseOutputDirButton.addActionListener(e -> {
             outputDirectory = this.chooseOutputDirectory();
@@ -49,18 +51,21 @@ public class RootWindow extends JFrame {
         });
         outputDirTextField = new JTextField();
         outputDirTextField.setEditable(false);
-        outputPanel.add(chooseOutputDirButton);
-        outputPanel.add(outputDirTextField);
-        topPanel.add(outputPanel);
+        outputOptionsPanel.add(chooseOutputDirButton);
+        outputOptionsPanel.add(outputDirTextField);
+        topPanel.add(outputOptionsPanel);
 
         this.add(topPanel);
 
+        JPanel inOutPanel = new JPanel(new GridLayout(1, 2));
+
         JPanel inputPanel = wrapInScrollPaneAndPanel(input, "Input (separate by new lines)");
-        this.add(inputPanel);
+        inOutPanel.add(inputPanel);
 
+        JPanel outputPanel = wrapInScrollPaneAndPanel(output, "Output");
+        inOutPanel.add(outputPanel);
 
-
-
+        this.add(inOutPanel);
 
         JButton createJsonsButton = new JButton("Start");
         createJsonsButton.addActionListener(e -> {
@@ -69,13 +74,18 @@ public class RootWindow extends JFrame {
                 return;
             }
 
-            String[] inputs = getInputArray();
+            if(jsonList.getSelectedIndex() == 2) {
+                generateBlockObjectFields();
+            }
+            else {
+                String[] inputs = getInputArray();
 
-            for (String input : inputs) {
-                if (jsonList.getSelectedIndex() == 0) {
-                    generateCubeBlockstate(input, modPrefix.getText(), outputDirectory);
-                } else if (jsonList.getSelectedIndex() == 1) {
-                    generateSelfLootTable(input, modPrefix.getText(), outputDirectory);
+                for (String input : inputs) {
+                    if (jsonList.getSelectedIndex() == 0) {
+                        generateCubeBlockstate(input, modPrefix.getText(), outputDirectory);
+                    } else if (jsonList.getSelectedIndex() == 1) {
+                        generateSelfLootTable(input, modPrefix.getText(), outputDirectory);
+                    }
                 }
             }
             showSuccessMessage("Success!");
@@ -135,6 +145,16 @@ public class RootWindow extends JFrame {
         catch(IOException e) {
             showErrorMessage(e.getStackTrace().toString());
         }
+    }
+
+    public void generateBlockObjectFields() {
+        String[] inputs = getInputArray();
+        String result = "";
+        for(String s: inputs) {
+            result += StringOperations.createBlockField(modPrefix.getText(), s) + "\n";
+        }
+
+        output.setText(result);
     }
 
     public File chooseOutputDirectory() {
