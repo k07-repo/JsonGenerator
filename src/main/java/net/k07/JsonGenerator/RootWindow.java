@@ -10,8 +10,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RootWindow extends JFrame {
 
@@ -37,7 +35,7 @@ public class RootWindow extends JFrame {
         JPanel prefixPanel = componentWithLabel(modPrefix, "Prefix");
         topPanel.add(prefixPanel);
 
-        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Create Block Object Fields"};
+        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Create Block Object Fields", "Camel Case to Snake Case", "Snake Case to Camel Case"};
         JComboBox jsonList = new JComboBox(choices);
         jsonList.setSelectedIndex(0);
         JPanel choicesPanel = componentWithLabel(jsonList, "Action");
@@ -87,7 +85,16 @@ public class RootWindow extends JFrame {
                     return;
 
                 case 2:
-                    generateBlockObjectFields();
+                    bulkGenerateBlockObjectFields(getInputArray());
+                    return;
+
+                case 3:
+                    bulkCamelCaseToSnakeCase(getInputArray());
+                    return;
+
+                case 4:
+                    bulkSnakeCaseToCamelCase(getInputArray());
+                    return;
             }
             showSuccessMessage("Success!");
         });
@@ -105,6 +112,28 @@ public class RootWindow extends JFrame {
             generateSelfLootTable(s, modPrefix.getText(), outputDirectory);
         }
     }
+
+    private static void bulkGenerateBlockObjectFields(String[] inputs) {
+        output.setText("");
+        for(String s: inputs) {
+            output.append(StringOperations.createBlockField(modPrefix.getText(), s) + "\n");
+        }
+    }
+
+    private static void bulkSnakeCaseToCamelCase(String[] inputs) {
+        output.setText("");
+        for(String s: inputs) {
+            output.append(StringOperations.snakeCaseToCamelCase(s) + "\n");
+        }
+    }
+
+    private static void bulkCamelCaseToSnakeCase(String[] inputs) {
+        output.setText("");
+        for(String s: inputs) {
+            output.append(StringOperations.camelCaseToSnakeCase(s) + "\n");
+        }
+    }
+
 
     private static void generateCubeBlockstate(String registryName, String prefix, File outputDirectory){
         String path = prefix + ":block/" + registryName;
@@ -161,16 +190,6 @@ public class RootWindow extends JFrame {
         catch(IOException e) {
             showErrorMessage(e.getStackTrace().toString());
         }
-    }
-
-    public void generateBlockObjectFields() {
-        String[] inputs = getInputArray();
-        String result = "";
-        for(String s: inputs) {
-            result += StringOperations.createBlockField(modPrefix.getText(), s) + "\n";
-        }
-
-        output.setText(result);
     }
 
     public File chooseOutputDirectory() {

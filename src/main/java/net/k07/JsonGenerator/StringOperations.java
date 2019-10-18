@@ -49,6 +49,9 @@ public class StringOperations {
             }
             else {
                 k++;
+                if(k >= input.length()) {
+                    break;
+                }
                 current = input.charAt(k);
                 stringBuilder.append(Character.toUpperCase(current));
             }
