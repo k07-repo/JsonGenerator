@@ -35,7 +35,7 @@ public class RootWindow extends JFrame {
         JPanel prefixPanel = componentWithLabel(modPrefix, "Prefix");
         topPanel.add(prefixPanel);
 
-        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Create Block Object Fields", "Camel Case to Snake Case", "Snake Case to Camel Case"};
+        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Create Block Object Fields", "Create Block Item Registry", "Camel Case to Snake Case", "Snake Case to Camel Case"};
         JComboBox jsonList = new JComboBox(choices);
         jsonList.setSelectedIndex(0);
         JPanel choicesPanel = componentWithLabel(jsonList, "Action");
@@ -89,12 +89,17 @@ public class RootWindow extends JFrame {
                     return;
 
                 case 3:
-                    bulkCamelCaseToSnakeCase(getInputArray());
+                    bulkCreateBlockItemRegistries(getInputArray());
                     return;
 
                 case 4:
+                    bulkCamelCaseToSnakeCase(getInputArray());
+                    return;
+
+                case 5:
                     bulkSnakeCaseToCamelCase(getInputArray());
                     return;
+
             }
             showSuccessMessage("Success!");
         });
@@ -117,6 +122,13 @@ public class RootWindow extends JFrame {
         output.setText("");
         for(String s: inputs) {
             output.append(StringOperations.createBlockField(modPrefix.getText(), s) + "\n");
+        }
+    }
+
+    private static void bulkCreateBlockItemRegistries(String[] inputs) {
+        output.setText("");
+        for(String s: inputs) {
+            output.append(StringOperations.createBlockItemRegistry(s) + "\n");
         }
     }
 

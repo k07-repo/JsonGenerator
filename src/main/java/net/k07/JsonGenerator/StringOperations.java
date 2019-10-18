@@ -14,7 +14,7 @@ public class StringOperations {
         return "@ObjectHolder(\"" + createID(prefix, camelCaseToSnakeCase(camelCaseName)) + "\") public static " + type + " " + camelCaseName + ";";
     }
 
-    public static String createBlockItemRegistry(String prefix, String camelCaseName) {
+    public static String createBlockItemRegistry(String camelCaseName) {
         return "registry.register(new BlockItem(BlockRegistry." + camelCaseName + ", blockTabProperty).setRegistryName(\"" + camelCaseToSnakeCase(camelCaseName) + "\"))";
     }
 
