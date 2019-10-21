@@ -1,4 +1,4 @@
-package net.k07.JsonGenerator;
+package net.k07.jsongenerator;
 
 public class StringOperations {
 

@@ -1,4 +1,4 @@
-package net.k07.JsonGenerator;
+package net.k07.jsongenerator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,7 +35,7 @@ public class RootWindow extends JFrame {
         JPanel prefixPanel = componentWithLabel(modPrefix, "Prefix");
         topPanel.add(prefixPanel);
 
-        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Create Block Object Fields", "Create Block Item Registry", "Camel Case to Snake Case", "Snake Case to Camel Case"};
+        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Create Block Object Fields", "Create Block Item Registry", "Camel Case to Snake Case", "Snake Case to Camel Case", "Properties Builder"};
         JComboBox jsonList = new JComboBox(choices);
         jsonList.setSelectedIndex(0);
         JPanel choicesPanel = componentWithLabel(jsonList, "Action");
@@ -70,7 +70,7 @@ public class RootWindow extends JFrame {
             switch(jsonList.getSelectedIndex()) {
                 case 0:
                     if(outputDirectory == null) {
-                        showErrorMessage("Select an output directory first!");
+                        MessageUtils.showErrorMessage("Select an output directory first!");
                         return;
                     }
                     bulkGenerateCubeBlockstates(getInputArray());
@@ -78,7 +78,7 @@ public class RootWindow extends JFrame {
 
                 case 1:
                     if(outputDirectory == null) {
-                        showErrorMessage("Select an output directory first!");
+                        MessageUtils.showErrorMessage("Select an output directory first!");
                         return;
                     }
                     bulkGenerateSelfLootTables(getInputArray());
@@ -100,8 +100,12 @@ public class RootWindow extends JFrame {
                     bulkSnakeCaseToCamelCase(getInputArray());
                     return;
 
+                case 6:
+                    BlockPropertiesBuilderWindow builderWindow = new BlockPropertiesBuilderWindow();
+                    builderWindow.setVisible(true);
             }
-            showSuccessMessage("Success!");
+
+            MessageUtils.showSuccessMessage("Success!");
         });
         this.add(createJsonsButton);
     }
@@ -165,7 +169,7 @@ public class RootWindow extends JFrame {
             GSON.toJson(variants, w);
         }
         catch(IOException e) {
-            showErrorMessage(e.getStackTrace().toString());
+            MessageUtils.showErrorMessage(e.getStackTrace().toString());
         }
     }
 
@@ -200,7 +204,7 @@ public class RootWindow extends JFrame {
             GSON.toJson(top, w);
         }
         catch(IOException e) {
-            showErrorMessage(e.getStackTrace().toString());
+            MessageUtils.showErrorMessage(e.getStackTrace().toString());
         }
     }
 
@@ -238,18 +242,6 @@ public class RootWindow extends JFrame {
         panel.add(new JLabel(name));
         panel.add(c);
         return panel;
-    }
-
-    public static void showSuccessMessage(String message) {
-        showMessage(message, "Success!", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    public static void showErrorMessage(String message) {
-        showMessage(message, "Error!", JOptionPane.ERROR_MESSAGE);
-    }
-
-    public static void showMessage(String message, String title, int type) {
-        JOptionPane.showMessageDialog(null, message, title, type);
     }
 
 
