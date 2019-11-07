@@ -35,7 +35,7 @@ public class RootWindow extends JFrame {
         JPanel prefixPanel = componentWithLabel(modPrefix, "Prefix");
         topPanel.add(prefixPanel);
 
-        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Create Block Object Fields", "Create Block Item Registry", "Camel Case to Snake Case", "Snake Case to Camel Case", "Properties Builder"};
+        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Cube Model", "Block Item Model", "Create Block Object Fields", "Create Block Item Registry", "Camel Case to Snake Case", "Snake Case to Camel Case", "Properties Builder"};
         JComboBox jsonList = new JComboBox(choices);
         jsonList.setSelectedIndex(0);
         JPanel choicesPanel = componentWithLabel(jsonList, "Action");
@@ -85,22 +85,38 @@ public class RootWindow extends JFrame {
                     return;
 
                 case 2:
-                    bulkGenerateBlockObjectFields(getInputArray());
+                    if(outputDirectory == null) {
+                        MessageUtils.showErrorMessage("Select an output directory first!");
+                        return;
+                    }
+                    bulkGenerateCubeModels(getInputArray());
                     return;
 
                 case 3:
-                    bulkCreateBlockItemRegistries(getInputArray());
+                    if(outputDirectory == null) {
+                        MessageUtils.showErrorMessage("Select an output directory first!");
+                        return;
+                    }
+                    bulkGenerateItemBlockModels(getInputArray());
                     return;
 
                 case 4:
-                    bulkCamelCaseToSnakeCase(getInputArray());
+                    bulkGenerateBlockObjectFields(getInputArray());
                     return;
 
                 case 5:
-                    bulkSnakeCaseToCamelCase(getInputArray());
+                    bulkCreateBlockItemRegistries(getInputArray());
                     return;
 
                 case 6:
+                    bulkCamelCaseToSnakeCase(getInputArray());
+                    return;
+
+                case 7:
+                    bulkSnakeCaseToCamelCase(getInputArray());
+                    return;
+
+                case 8:
                     BlockPropertiesBuilderWindow builderWindow = new BlockPropertiesBuilderWindow();
                     builderWindow.setVisible(true);
             }
@@ -119,6 +135,18 @@ public class RootWindow extends JFrame {
     private static void bulkGenerateSelfLootTables(String[] inputs) {
         for(String s: inputs) {
             generateSelfLootTable(s, modPrefix.getText(), outputDirectory);
+        }
+    }
+
+    private static void bulkGenerateCubeModels(String[] inputs) {
+        for(String s: inputs) {
+            generateCubeModel(s, modPrefix.getText(), outputDirectory);
+        }
+    }
+
+    private static void bulkGenerateItemBlockModels(String[] inputs) {
+        for(String s: inputs) {
+            generateItemBlockModel(s, modPrefix.getText(), outputDirectory);
         }
     }
 
@@ -152,13 +180,13 @@ public class RootWindow extends JFrame {
 
 
     private static void generateCubeBlockstate(String registryName, String prefix, File outputDirectory){
-        String path = prefix + ":block/" + registryName;
+        String path = prefix + ":" + registryName;
 
         JsonObject model = new JsonObject();
         model.addProperty("model", path);
 
         JsonObject blankVariant = new JsonObject();
-        blankVariant.add("", model);
+        blankVariant.add("normal", model);
 
         JsonObject variants = new JsonObject();
         variants.add("variants", blankVariant);
@@ -167,6 +195,41 @@ public class RootWindow extends JFrame {
 
         try(FileWriter w = new FileWriter(f)) {
             GSON.toJson(variants, w);
+        }
+        catch(IOException e) {
+            MessageUtils.showErrorMessage(e.getStackTrace().toString());
+        }
+    }
+
+    private static void generateCubeModel(String registryName, String prefix, File outputDirectory){
+        String path = prefix + ":blocks/" + registryName;
+
+        JsonObject all = new JsonObject();
+        all.addProperty("all", path);
+
+        JsonObject top = new JsonObject();
+        top.addProperty("parent", "block/cube_all");
+        top.add("textures", all);
+
+        File f = new File(outputDirectory, registryName + ".json");
+
+        try(FileWriter w = new FileWriter(f)) {
+            GSON.toJson(top, w);
+        }
+        catch(IOException e) {
+            MessageUtils.showErrorMessage(e.getStackTrace().toString());
+        }
+    }
+
+    private static void generateItemBlockModel(String registryName, String prefix, File outputDirectory) {
+        String path = prefix + ":block/" + registryName;
+        JsonObject parent = new JsonObject();
+        parent.addProperty("parent", path);
+
+        File f = new File(outputDirectory, registryName + ".json");
+
+        try(FileWriter w = new FileWriter(f)) {
+            GSON.toJson(parent, w);
         }
         catch(IOException e) {
             MessageUtils.showErrorMessage(e.getStackTrace().toString());
