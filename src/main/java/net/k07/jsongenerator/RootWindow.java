@@ -13,6 +13,9 @@ import java.io.IOException;
 
 public class RootWindow extends JFrame {
 
+    enum ModelType {
+        CUBE, CROSS
+    }
     private static JTextArea input;
     private static JTextArea output;
     private static JTextField modPrefix;
@@ -35,7 +38,7 @@ public class RootWindow extends JFrame {
         JPanel prefixPanel = componentWithLabel(modPrefix, "Prefix");
         topPanel.add(prefixPanel);
 
-        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Cube Model", "Block Item Model", "Create Block Object Fields", "Create Block Item Registry", "Camel Case to Snake Case", "Snake Case to Camel Case", "Properties Builder"};
+        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Cube Model", "Cross Model", "Block Item Model", "Special Item Model", "Create Block Object Fields", "Create Block Item Registry", "Camel Case to Snake Case", "Snake Case to Camel Case", "Properties Builder"};
         JComboBox jsonList = new JComboBox(choices);
         jsonList.setSelectedIndex(0);
         JPanel choicesPanel = componentWithLabel(jsonList, "Action");
@@ -97,26 +100,43 @@ public class RootWindow extends JFrame {
                         MessageUtils.showErrorMessage("Select an output directory first!");
                         return;
                     }
+                    bulkGenerateCrossModels(getInputArray());
+                    return;
+
+
+                case 4:
+                    if(outputDirectory == null) {
+                        MessageUtils.showErrorMessage("Select an output directory first!");
+                        return;
+                    }
                     bulkGenerateItemBlockModels(getInputArray());
                     return;
 
-                case 4:
-                    bulkGenerateBlockObjectFields(getInputArray());
-                    return;
-
                 case 5:
-                    bulkCreateBlockItemRegistries(getInputArray());
+                    if(outputDirectory == null) {
+                        MessageUtils.showErrorMessage("Select an output directory first!");
+                        return;
+                    }
+                    bulkGenerateSpecialItemModels(getInputArray());
                     return;
 
                 case 6:
-                    bulkCamelCaseToSnakeCase(getInputArray());
+                    bulkGenerateBlockObjectFields(getInputArray());
                     return;
 
                 case 7:
-                    bulkSnakeCaseToCamelCase(getInputArray());
+                    bulkCreateBlockItemRegistries(getInputArray());
                     return;
 
                 case 8:
+                    bulkCamelCaseToSnakeCase(getInputArray());
+                    return;
+
+                case 9:
+                    bulkSnakeCaseToCamelCase(getInputArray());
+                    return;
+
+                case 10:
                     BlockPropertiesBuilderWindow builderWindow = new BlockPropertiesBuilderWindow();
                     builderWindow.setVisible(true);
             }
@@ -140,13 +160,25 @@ public class RootWindow extends JFrame {
 
     private static void bulkGenerateCubeModels(String[] inputs) {
         for(String s: inputs) {
-            generateCubeModel(s, modPrefix.getText(), outputDirectory);
+            generateBasicModel(s, ModelType.CUBE, modPrefix.getText(), outputDirectory);
+        }
+    }
+
+    private static void bulkGenerateCrossModels(String[] inputs) {
+        for(String s: inputs) {
+            generateBasicModel(s, ModelType.CROSS, modPrefix.getText(), outputDirectory);
         }
     }
 
     private static void bulkGenerateItemBlockModels(String[] inputs) {
         for(String s: inputs) {
             generateItemBlockModel(s, modPrefix.getText(), outputDirectory);
+        }
+    }
+
+    private static void bulkGenerateSpecialItemModels(String[] inputs) {
+        for(String s: inputs) {
+            generateSpecialItemModel(s, modPrefix.getText(), outputDirectory);
         }
     }
 
@@ -201,14 +233,32 @@ public class RootWindow extends JFrame {
         }
     }
 
-    private static void generateCubeModel(String registryName, String prefix, File outputDirectory){
+    private static void generateBasicModel(String registryName, ModelType type, String prefix, File outputDirectory){
         String path = prefix + ":blocks/" + registryName;
+        String textureType, modelType;
+        switch(type) {
+            case CUBE:
+                textureType = "all";
+                modelType = "block/cube_all";
+                break;
+
+            case CROSS:
+                textureType = "cross";
+                modelType = "block/cross";
+                break;
+
+            default:
+                MessageUtils.showErrorMessage("No type selected. This should not occur, please report this bug.");
+                textureType = "all";
+                modelType = "block/cube_all";
+                break;
+        }
 
         JsonObject all = new JsonObject();
-        all.addProperty("all", path);
+        all.addProperty(textureType, path);
 
         JsonObject top = new JsonObject();
-        top.addProperty("parent", "block/cube_all");
+        top.addProperty("parent", modelType);
         top.add("textures", all);
 
         File f = new File(outputDirectory, registryName + ".json");
@@ -230,6 +280,27 @@ public class RootWindow extends JFrame {
 
         try(FileWriter w = new FileWriter(f)) {
             GSON.toJson(parent, w);
+        }
+        catch(IOException e) {
+            MessageUtils.showErrorMessage(e.getStackTrace().toString());
+        }
+    }
+
+    private static void generateSpecialItemModel(String registryName, String prefix, File outputDirectory) {
+        String path = prefix + ":blocks/" + registryName;
+
+        JsonObject top = new JsonObject();
+        top.addProperty("parent", "item/generated");
+
+        JsonObject textures = new JsonObject();
+        textures.addProperty("layer0", path);
+
+        top.add("textures", textures);
+
+        File f = new File(outputDirectory, registryName + ".json");
+
+        try(FileWriter w = new FileWriter(f)) {
+            GSON.toJson(top, w);
         }
         catch(IOException e) {
             MessageUtils.showErrorMessage(e.getStackTrace().toString());
