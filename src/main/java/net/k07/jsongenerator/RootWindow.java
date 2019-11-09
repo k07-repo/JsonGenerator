@@ -38,7 +38,7 @@ public class RootWindow extends JFrame {
         JPanel prefixPanel = componentWithLabel(modPrefix, "Prefix");
         topPanel.add(prefixPanel);
 
-        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Cube Model", "Cross Model", "Block Item Model", "Special Item Model", "Create Block Object Fields", "Create Block Item Registry", "Camel Case to Snake Case", "Snake Case to Camel Case", "Properties Builder"};
+        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Cube Model", "Cross Model", "Block Item Model", "Special Item Model", "Create Block Object Fields", "Create Block Item Registry", "Camel Case to Snake Case", "Snake Case to Camel Case", "Properties Builder", "Bulk File Rename (Camel Case to Snake Case)"};
         JComboBox jsonList = new JComboBox(choices);
         jsonList.setSelectedIndex(0);
         JPanel choicesPanel = componentWithLabel(jsonList, "Action");
@@ -139,6 +139,15 @@ public class RootWindow extends JFrame {
                 case 10:
                     BlockPropertiesBuilderWindow builderWindow = new BlockPropertiesBuilderWindow();
                     builderWindow.setVisible(true);
+                    return;
+
+                case 11:
+                    if(outputDirectory == null) {
+                        MessageUtils.showErrorMessage("Select an input directory first!");
+                        return;
+                    }
+                    FileOperations.renameAllFirstLevelFiles(outputDirectory);
+                    return;
             }
 
             MessageUtils.showSuccessMessage("Success!");
@@ -287,7 +296,7 @@ public class RootWindow extends JFrame {
     }
 
     private static void generateSpecialItemModel(String registryName, String prefix, File outputDirectory) {
-        String path = prefix + ":blocks/" + registryName;
+        String path = prefix + ":items/" + registryName;
 
         JsonObject top = new JsonObject();
         top.addProperty("parent", "item/generated");

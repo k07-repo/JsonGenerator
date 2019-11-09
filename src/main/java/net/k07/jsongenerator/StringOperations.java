@@ -27,7 +27,7 @@ public class StringOperations {
 
         for(int k = 0; k < input.length(); k++) {
             char current = input.charAt(k);
-            if(Character.isLowerCase(current)) {
+            if(Character.isLowerCase(current) || current == '.') {
                 stringBuilder.append(input.charAt(k));
             }
             else {
