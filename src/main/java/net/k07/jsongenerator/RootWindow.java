@@ -38,7 +38,7 @@ public class RootWindow extends JFrame {
         JPanel prefixPanel = componentWithLabel(modPrefix, "Prefix");
         topPanel.add(prefixPanel);
 
-        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Cube Model", "Cross Model", "Block Item Model", "Special Item Model", "Create Block Object Fields", "Create Block Item Registry", "Camel Case to Snake Case", "Snake Case to Camel Case", "Properties Builder", "Bulk File Rename (Camel Case to Snake Case)"};
+        String[] choices = {"Cube Blockstate", "Drop-Self Loot Table", "Cube Model", "Cross Model", "Block Item Model", "Special Item Model", "Create Block Object Fields", "Create Block Item Registry", "Camel Case to Snake Case", "Snake Case to Camel Case", "Properties Builder", "Bulk File Rename (Camel Case to Snake Case)", "All File Names In Directory (No Extensions)"};
         JComboBox jsonList = new JComboBox(choices);
         jsonList.setSelectedIndex(0);
         JPanel choicesPanel = componentWithLabel(jsonList, "Action");
@@ -147,6 +147,14 @@ public class RootWindow extends JFrame {
                         return;
                     }
                     FileOperations.renameAllFirstLevelFiles(outputDirectory);
+                    return;
+
+                case 12:
+                    if(outputDirectory == null) {
+                        MessageUtils.showErrorMessage("Select an input directory first!");
+                        return;
+                    }
+                    output.setText(FileOperations.getAllFirstLevelFiles(outputDirectory));
                     return;
             }
 
@@ -299,7 +307,7 @@ public class RootWindow extends JFrame {
         String path = prefix + ":items/" + registryName;
 
         JsonObject top = new JsonObject();
-        top.addProperty("parent", "item/generated");
+        top.addProperty("parent", "item/handheld");
 
         JsonObject textures = new JsonObject();
         textures.addProperty("layer0", path);

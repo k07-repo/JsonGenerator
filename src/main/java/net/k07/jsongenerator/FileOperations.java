@@ -18,7 +18,7 @@ public class FileOperations {
         if(targetDirectory.isDirectory()) {
             File[] targetFiles = targetDirectory.listFiles();
             //Security measure in case an incorrect directory with a bunch of files was specified
-            if(targetFiles.length < 32) {
+            if(targetFiles.length < 300) {
                 for(File file: targetFiles) {
                     String fileName = file.getName();
                     if(!renameFile(targetDirectory, fileName, StringOperations.camelCaseToSnakeCase(fileName))) {
@@ -27,7 +27,7 @@ public class FileOperations {
                 }
             }
             else {
-                MessageUtils.showErrorMessage("Target directory cannot contain more than 32 files! This is a security measure.");
+                MessageUtils.showErrorMessage("Target directory cannot contain more than 300 files! This is a security measure.");
                 return false;
             }
 
@@ -36,6 +36,28 @@ public class FileOperations {
         else {
             MessageUtils.showErrorMessage("Selected file is not a directory!");
             return false;
+        }
+    }
+
+    public static String getAllFirstLevelFiles(File targetDirectory) {
+        String result = "";
+        if(targetDirectory.isDirectory()) {
+            File[] targetFiles = targetDirectory.listFiles();
+
+            for(File file: targetFiles) {
+                String fileName = file.getName();
+                int extensionStart = fileName.indexOf('.');
+                if(extensionStart != -1) {
+                    String fileNameWithoutExtension = fileName.substring(0, extensionStart);
+                    result += fileNameWithoutExtension + "\n";
+                }
+            }
+
+            return result;
+        }
+        else {
+            MessageUtils.showErrorMessage("Selected file is not a directory!");
+            return result;
         }
     }
 

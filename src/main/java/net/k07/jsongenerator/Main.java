@@ -8,5 +8,6 @@ public class Main {
         JFrame rootWindow = new RootWindow();
         rootWindow.setSize(600, 600);
         rootWindow.setVisible(true);
+
     }
 }
